@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+When you need to install anything always check [package.json](mdc:package.json) first if it's not intalled and I use pnpm as my package manager
+this is a nextjs app router dir application
+
+- before installing anything check [package-management.mdc](mdc:.cursor/rules/package-management.mdc)
+- we use pnpm as a package manager
+- shadcn is used for the ui
+to install a shadcn component, use `pnpm dlx shadcn@latest add [component]` eg. pnpm dlx shadcn@latest add button
