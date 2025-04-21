@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { Urbanist } from "next/font/google";
+import { Providers } from "@/providers";
+import { getUser } from "@/lib/dal";
+import { UserProvider } from "@/providers/user-provider";
+import { Toaster } from "sonner";
 
 import "./globals.css";
 // import Navbar from "@/components/navbar";
@@ -18,15 +22,24 @@ export const metadata: Metadata = {
   description: "An engaging learning platform for students and educators",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await getUser();
   return (
     <html lang="en">
       <body className={`${urbanist.variable} font-sans antialiased`}>
-        {children}
+        <Providers>
+          <UserProvider initialUser={user}>
+            <div className="min-h-screen bg-gray-50">
+              {/* Main content */}
+              <main>{children}</main>
+            </div>
+          </UserProvider>
+        </Providers>
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );

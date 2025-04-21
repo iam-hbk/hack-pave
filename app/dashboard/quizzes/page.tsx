@@ -1,14 +1,25 @@
-import { currentUser, mockQuizzes } from "@/lib/mock-data"
+'use client'
+import {  mockQuizzes } from "@/lib/mock-data"
 import { Button } from "@/components/ui/button"
 import { Clock, FileQuestion } from "lucide-react"
+import { getUser } from "@/lib/dal";
+import { redirect } from 'next/navigation';
 
-export default function QuizzesPage() {
-  if (currentUser.role !== 'STUDENT') {
+export default async function QuizzesPage() {
+  const user = await getUser();
+  
+  if (!user) {
+    redirect('/login');
+  }
+
+  // Now we can safely check the role
+  if (user.role !== 'INSTRUCTOR') {
     return (
-      <div className="flex h-[50vh] items-center justify-center">
-        <p className="text-lg text-muted-foreground">Access Denied</p>
+      <div className="text-center">
+        <h1 className="text-2xl font-bold">Access Denied</h1>
+        <p>Only instructors can access this page.</p>
       </div>
-    )
+    );
   }
 
   return (

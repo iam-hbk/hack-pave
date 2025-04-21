@@ -1,12 +1,26 @@
 import { User, NavigationItem } from "./types";
 
 // Mock current user - this would normally come from authentication
-export const currentUser: User = {
+export const mockUser: User = {
   id: "1",
   name: "John Doe",
   email: "john@example.com",
   role: "STUDENT",
   avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
+};
+export const mockInstructor: User = {
+  id: "2",
+  name: "Jane Smith",
+  email: "jane@example.com",
+  role: "INSTRUCTOR",
+  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
+};
+export const mockAdmin: User = {
+  id: "3",
+  name: "Admin User",
+  email: "admin@example.com",
+  role: "ADMIN",
+  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Admin",
 };
 
 // Navigation items by role
@@ -19,7 +33,11 @@ export const navigationItems: Record<string, NavigationItem[]> = {
   ],
   INSTRUCTOR: [
     { title: "Dashboard", href: "/dashboard", icon: "home" },
-    { title: "Create Quiz", href: "/dashboard/create-quiz", icon: "plus" },
+    {
+      title: "Manage Modules",
+      href: "/dashboard/modules",
+      icon: "manage-modules",
+    },
     {
       title: "Manage Quizzes",
       href: "/dashboard/manage-quizzes",

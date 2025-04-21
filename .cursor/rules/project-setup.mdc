@@ -10,3 +10,5 @@ this is a nextjs app router dir application
 - we use pnpm as a package manager
 - shadcn is used for the ui
 to install a shadcn component, use `pnpm dlx shadcn@latest add [component]` eg. pnpm dlx shadcn@latest add button
+- use the components folder at root of the project when needed to create a component
+- never create a components directory under the app folder. 

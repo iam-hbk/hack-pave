@@ -11,8 +11,9 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
+import { User } from "@/lib/dal";
 
-export function LandingPageNav() {
+export function LandingPageNav({ user }: { user: User | null }) {
   const scrolled = useScrollPosition();
 
   return (
@@ -38,7 +39,7 @@ export function LandingPageNav() {
             <NavigationMenuItem>
               <NavigationMenuLink
                 href="/#features"
-                className="hover:text-primary text-gray-100 transition-colors hover:bg-background px-2"
+                className="hover:text-primary hover:bg-background px-2 text-gray-100 transition-colors"
               >
                 Features
               </NavigationMenuLink>
@@ -46,7 +47,7 @@ export function LandingPageNav() {
             <NavigationMenuItem>
               <NavigationMenuLink
                 href="/#team"
-                className="hover:text-primary text-gray-100 transition-colors hover:bg-background px-2"
+                className="hover:text-primary hover:bg-background px-2 text-gray-100 transition-colors"
               >
                 Team
               </NavigationMenuLink>
@@ -54,7 +55,7 @@ export function LandingPageNav() {
             <NavigationMenuItem>
               <NavigationMenuLink
                 href="/#about"
-                className="hover:text-primary text-gray-100 transition-colors hover:bg-background px-2"
+                className="hover:text-primary hover:bg-background px-2 text-gray-100 transition-colors"
               >
                 About
               </NavigationMenuLink>

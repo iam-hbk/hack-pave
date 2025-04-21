@@ -3,11 +3,14 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Logo3D from "@/components/logo3D";
 import { LandingPageNav } from "@/components/landing-page-nav";
+import { getUser } from "@/lib/dal";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getUser();
+
   return (
-    <div className="min-h-screen animated-gradient-bg">
-      <LandingPageNav />
+    <div className="animated-gradient-bg min-h-screen">
+      <LandingPageNav user={user} />
       {/* Hero Section */}
       <section className="container mx-auto flex h-screen w-full flex-col items-center justify-center gap-8 text-center md:flex-row-reverse">
         <div className="flex items-center justify-center">

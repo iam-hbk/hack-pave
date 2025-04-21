@@ -1,5 +1,6 @@
-import * as React from "react";
+'use client';
 
+import * as React from "react";
 import { SearchForm } from "@/components/search-form";
 import {
   Sidebar,
@@ -12,7 +13,8 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
-import { navigationItems, currentUser } from "@/lib/mock-data";
+import { navigationItems } from "@/lib/mock-data";
+import { useUser } from "@/providers/user-provider";
 
 import {
   Home,
@@ -24,6 +26,7 @@ import {
   Users,
   Database,
   Settings,
+  LayoutDashboard,
 } from "lucide-react";
 import { NavUser } from "./nav-user";
 import Link from "next/link";
@@ -38,11 +41,20 @@ const icons = {
   users: Users,
   database: Database,
   settings: Settings,
+  "manage-modules": LayoutDashboard,
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  // Get navigation items based on user role
-  const userNavigation = navigationItems[currentUser.role];
+  const { user } = useUser();
+
+  // If no user is logged in, return minimal sidebar or null
+  if (!user) {
+    return null;
+  }
+
+  // Convert role to uppercase for navigation items lookup
+  const roleKey = user.role as keyof typeof navigationItems;
+  const userNavigation = navigationItems[roleKey];
 
   return (
     <Sidebar {...props}>
@@ -60,7 +72,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="mx-3">
         <SidebarMenu>
-          {userNavigation.map((item) => {
+          {userNavigation?.map((item) => {
             const Icon = icons[item.icon as keyof typeof icons];
             return (
               <SidebarMenuItem key={item.title}>
@@ -76,7 +88,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={currentUser} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
