@@ -58,7 +58,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </Link>
         <SearchForm />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="mx-3">
         <SidebarMenu>
           {userNavigation.map((item) => {
             const Icon = icons[item.icon as keyof typeof icons];

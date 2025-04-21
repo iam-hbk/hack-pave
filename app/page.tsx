@@ -2,74 +2,54 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Logo3D from "@/components/logo3D";
+import { LandingPageNav } from "@/components/landing-page-nav";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
-      {/* Marketing Navigation */}
-      <nav className="w-full p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="w-32">
-            <Image
-              src="/Pave_Logo.svg"
-              alt="Pave Logo"
-              width={120}
-              height={40}
-              priority
-            />
-          </div>
-          <div className="space-x-6">
-            <Link href="/login">
-              <Button variant="ghost">Sign In</Button>
-            </Link>
-            <Link href="/register">
-              <Button>Sign Up</Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
-
+    <div className="min-h-screen animated-gradient-bg">
+      <LandingPageNav />
       {/* Hero Section */}
-      <div className="flex justify-center items-center">
-        <Logo3D />
-      </div>
-      <section className="py-20 px-4">
-        <div className="container mx-auto">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Your Personalized Academic Virtual Environment
-            </h1>
-            <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-              Transform your learning experience with PAVE - where AI-powered
-              personalization meets academic excellence. Engage, learn, and
-              succeed on your terms.
-            </p>
-            <div className="space-x-4">
-              <Button
-                asChild
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90"
-              >
-                <Link href="/dashboard">Start Learning</Link>
-              </Button>
-              <Button size="lg" variant="outline">
-                Learn More
-              </Button>
-            </div>
+      <section className="container mx-auto flex h-screen w-full flex-col items-center justify-center gap-8 text-center md:flex-row-reverse">
+        <div className="flex items-center justify-center">
+          <Logo3D />
+        </div>
+        <div className="flex flex-col items-center">
+          <h1 className="mb-6 max-w-xl text-2xl font-bold text-gray-300 md:text-4xl">
+            <span className="text-[#FFD700]">P</span>ersonalized{" "}
+            <span className="text-[#FF5757]">A</span>cademic{" "}
+            <span className="text-[#7B3FF0]">V</span>irtual{" "}
+            <span className="text-[#4A90E2]">E</span>nvironment
+          </h1>
+          <p className="mx-auto mb-12 max-w-2xl text-xl text-gray-200">
+            Transform your learning experience with PAVE - where AI-powered
+            personalization meets academic excellence. Engage, learn, and
+            succeed on your terms.
+          </p>
+          <div className="space-x-4">
+            <Button
+              asChild
+              size="lg"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90"
+            >
+              <Link href="/dashboard">Start Learning</Link>
+            </Button>
+            <Button size="lg" variant="outline">
+              Learn More
+            </Button>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="bg-gray-50 py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-16">
+          <h2 className="mb-16 text-center text-3xl font-bold">
             Why Choose PAVE?
           </h2>
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid gap-12 md:grid-cols-3">
             <div className="text-center">
-              <div className="bg-white p-6 rounded-xl shadow-sm">
-                <h3 className="text-xl font-semibold mb-4">
+              <div className="rounded-xl bg-white p-6 shadow-sm">
+                <h3 className="mb-4 text-xl font-semibold">
                   AI-Powered Learning
                 </h3>
                 <p className="text-gray-600">
@@ -79,8 +59,8 @@ export default function Home() {
               </div>
             </div>
             <div className="text-center">
-              <div className="bg-white p-6 rounded-xl shadow-sm">
-                <h3 className="text-xl font-semibold mb-4">
+              <div className="rounded-xl bg-white p-6 shadow-sm">
+                <h3 className="mb-4 text-xl font-semibold">
                   Engagement Rewards
                 </h3>
                 <p className="text-gray-600">
@@ -90,8 +70,8 @@ export default function Home() {
               </div>
             </div>
             <div className="text-center">
-              <div className="bg-white p-6 rounded-xl shadow-sm">
-                <h3 className="text-xl font-semibold mb-4">Smart Attendance</h3>
+              <div className="rounded-xl bg-white p-6 shadow-sm">
+                <h3 className="mb-4 text-xl font-semibold">Smart Attendance</h3>
                 <p className="text-gray-600">
                   Seamless QR-code based attendance tracking with real-time
                   analytics
@@ -103,9 +83,9 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-600">
+      <section className="bg-gradient-to-r from-purple-600 to-blue-600 py-20">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-white mb-8">
+          <h2 className="mb-8 text-3xl font-bold text-white">
             Ready to revolutionize your learning experience?
           </h2>
           <Button
@@ -119,9 +99,9 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 py-12 text-white">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid gap-8 md:grid-cols-4">
             <div>
               <Image
                 src="/Pave_Logo.svg"
@@ -136,7 +116,7 @@ export default function Home() {
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Features</h4>
+              <h4 className="mb-4 font-semibold">Features</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>AI Quiz Generation</li>
                 <li>Attendance Tracking</li>
@@ -144,7 +124,7 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Resources</h4>
+              <h4 className="mb-4 font-semibold">Resources</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>Student Guide</li>
                 <li>Help Center</li>
@@ -152,7 +132,7 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
+              <h4 className="mb-4 font-semibold">Support</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>Contact Us</li>
                 <li>Documentation</li>
@@ -160,7 +140,7 @@ export default function Home() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+          <div className="mt-12 border-t border-gray-800 pt-8 text-center text-gray-400">
             <p>© 2024 PAVE. All rights reserved.</p>
           </div>
         </div>

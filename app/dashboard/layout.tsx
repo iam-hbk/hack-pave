@@ -6,7 +6,7 @@ import {
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   BreadcrumbItem,
-  BreadcrumbPage,
+//   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import {
