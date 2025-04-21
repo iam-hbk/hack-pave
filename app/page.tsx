@@ -1,6 +1,7 @@
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import Logo3D from "@/components/logo3D";
 
 export default function Home() {
   return (
@@ -29,21 +30,30 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
+      <div className="flex justify-center items-center">
+        <Logo3D />
+      </div>
       <section className="py-20 px-4">
         <div className="container mx-auto">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Streamline Your Project Management
+              Your Personalized Academic Virtual Environment
             </h1>
             <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-              Pave helps teams collaborate seamlessly, track progress effortlessly, and deliver projects successfully.
+              Transform your learning experience with PAVE - where AI-powered
+              personalization meets academic excellence. Engage, learn, and
+              succeed on your terms.
             </p>
             <div className="space-x-4">
-              <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90">
-                Start Free Trial
+              <Button
+                asChild
+                size="lg"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90"
+              >
+                <Link href="/dashboard">Start Learning</Link>
               </Button>
               <Button size="lg" variant="outline">
-                Book a Demo
+                Learn More
               </Button>
             </div>
           </div>
@@ -53,24 +63,39 @@ export default function Home() {
       {/* Features Section */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-16">Why Choose Pave?</h2>
+          <h2 className="text-3xl font-bold text-center mb-16">
+            Why Choose PAVE?
+          </h2>
           <div className="grid md:grid-cols-3 gap-12">
             <div className="text-center">
               <div className="bg-white p-6 rounded-xl shadow-sm">
-                <h3 className="text-xl font-semibold mb-4">Intuitive Interface</h3>
-                <p className="text-gray-600">Simple and easy to use platform that your team will love</p>
+                <h3 className="text-xl font-semibold mb-4">
+                  AI-Powered Learning
+                </h3>
+                <p className="text-gray-600">
+                  Instantly generate quizzes from your study materials and
+                  receive personalized learning recommendations
+                </p>
               </div>
             </div>
             <div className="text-center">
               <div className="bg-white p-6 rounded-xl shadow-sm">
-                <h3 className="text-xl font-semibold mb-4">Real-time Collaboration</h3>
-                <p className="text-gray-600">Work together seamlessly with your team in real-time</p>
+                <h3 className="text-xl font-semibold mb-4">
+                  Engagement Rewards
+                </h3>
+                <p className="text-gray-600">
+                  Earn PAVE Coins for participation and excellence in your
+                  academic journey
+                </p>
               </div>
             </div>
             <div className="text-center">
               <div className="bg-white p-6 rounded-xl shadow-sm">
-                <h3 className="text-xl font-semibold mb-4">Powerful Analytics</h3>
-                <p className="text-gray-600">Get insights into your project progress and team performance</p>
+                <h3 className="text-xl font-semibold mb-4">Smart Attendance</h3>
+                <p className="text-gray-600">
+                  Seamless QR-code based attendance tracking with real-time
+                  analytics
+                </p>
               </div>
             </div>
           </div>
@@ -80,9 +105,15 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-600">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-white mb-8">Ready to transform your project management?</h2>
-          <Button size="lg" variant="secondary" className="bg-white text-purple-600 hover:bg-gray-100">
-            Get Started Now
+          <h2 className="text-3xl font-bold text-white mb-8">
+            Ready to revolutionize your learning experience?
+          </h2>
+          <Button
+            size="lg"
+            variant="secondary"
+            className="bg-white text-purple-600 hover:bg-gray-100"
+          >
+            Join PAVE Today
           </Button>
         </div>
       </section>
@@ -100,38 +131,40 @@ export default function Home() {
                 className="mb-4"
                 priority
               />
-              <p className="text-gray-400">Your path to project success</p>
+              <p className="text-gray-400">
+                Your personalized path to academic success
+              </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Product</h4>
+              <h4 className="font-semibold mb-4">Features</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>Features</li>
-                <li>Pricing</li>
-                <li>Use Cases</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>About</li>
-                <li>Blog</li>
-                <li>Careers</li>
+                <li>AI Quiz Generation</li>
+                <li>Attendance Tracking</li>
+                <li>Performance Analytics</li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Resources</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>Documentation</li>
+                <li>Student Guide</li>
                 <li>Help Center</li>
-                <li>Contact</li>
+                <li>FAQs</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li>Contact Us</li>
+                <li>Documentation</li>
+                <li>Privacy Policy</li>
               </ul>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>© 2024 Pave. All rights reserved.</p>
+            <p>© 2024 PAVE. All rights reserved.</p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }
