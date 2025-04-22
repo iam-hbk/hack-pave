@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useTransition } from 'react';
 import { login } from '@/app/actions/auth';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,22 +12,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { UserRole } from '@/lib/dal';
-
-// Define the initial state
-const initialState = {
-  error: null as string | null
-};
+// import { UserRole } from '@/lib/authApi';
+import { useState } from 'react';
+import { Loader } from 'lucide-react';
 
 export function LoginForm({
   callbackUrl = '/dashboard'
 }: {
   callbackUrl?: string;
 }) {
-  const [state, formAction] = useActionState(login, initialState);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
+    startTransition(async () => {
+      const result = await login(formData);
+      if (result?.error) {
+        setError(result.error);
+      }
+    });
+  };
 
   return (
-    <form action={formAction} className="mt-8 space-y-6">
+    <form onSubmit={handleSubmit} className="mt-8 space-y-6">
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
       
       <div className="space-y-4">
@@ -73,7 +83,7 @@ export function LoginForm({
         </div>
       </div>
 
-      {state.error && (
+      {error && (
         <div className="rounded-md bg-destructive/10 p-4">
           <div className="flex">
             <div className="ml-3">
@@ -81,15 +91,15 @@ export function LoginForm({
                 Login failed
               </h3>
               <div className="mt-2 text-sm text-destructive">
-                {state.error}
+                {error}
               </div>
             </div>
           </div>
         </div>
       )}
 
-      <Button type="submit" className="w-full">
-        Sign in
+      <Button type="submit" className="w-full cursor-pointer" disabled={isPending} >
+        {isPending ? <><Loader className="w-4 h-4 mr-2 animate-spin" />Signing in...</> : 'Sign in'}
       </Button>
     </form>
   );

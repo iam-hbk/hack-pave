@@ -1,15 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useQuizStore } from '@/store/quiz';
-import { QuestionType, Question } from '@/types/quiz';
+import { QuestionType, Quiz, quizSchema } from '@/types/quiz';
 import { toast } from 'sonner';
 import { QuestionEditor } from './QuestionEditor';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import FileUploader from '@/components/file-upload';
+import type { FileWithPreview } from '@/hooks/use-file-upload';
+import { useQuizGeneration } from '@/hooks/use-quiz-generation';
+import { useQuizSubmission } from '@/hooks/use-quiz-submission';
+import { useQuizStore } from '@/store/use-quiz-store';
 
 export function CreateQuizModal({
   open,
@@ -21,96 +28,109 @@ export function CreateQuizModal({
   moduleCode: string;
 }) {
   const [selectedTab, setSelectedTab] = useState<'manual' | 'ai'>('manual');
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const addQuestion = useQuizStore((state) => state.addQuestion);
-  const saveQuizDraft = useQuizStore((state) => state.saveQuizDraft);
-  const setQuizTitle = useQuizStore((state) => state.setQuizTitle);
-  const currentQuiz = useQuizStore((state) => state.currentQuiz);
-  const clearCurrentQuiz = useQuizStore((state) => state.clearCurrentQuiz);
+  const [uploadedFiles, setUploadedFiles] = useState<FileWithPreview[]>([]);
 
-  // Initialize a new quiz when the modal opens
+  const questions = useQuizStore((state) => state.questions);
+  const setQuestions = useQuizStore((state) => state.setQuestions);
+  const clearQuestions = useQuizStore((state) => state.clearQuestions);
+
+  const form = useForm<Quiz>({
+    resolver: zodResolver(quizSchema),
+    defaultValues: {
+      title: 'New Quiz',
+      questions: [],
+      moduleCode,
+    },
+  });
+
+  const { handleSubmit, watch, setValue, reset } = form;
+  const formQuestions = watch('questions');
+
+  // Reset form and store when modal opens/closes
   useEffect(() => {
-    if (open) {
-      setQuizTitle('New Quiz');
-    } else {
-      // Clear the quiz when modal closes
-      clearCurrentQuiz();
+    if (!open) {
+      clearQuestions();
+      reset({
+        title: 'New Quiz',
+        questions: [],
+        moduleCode,
+      });
     }
-  }, [open, setQuizTitle, clearCurrentQuiz]);
+  }, [open, clearQuestions, reset, moduleCode]);
+
+  // Update form when questions change in store
+  useEffect(() => {
+    if (questions.length > 0) {
+      setValue('questions', questions);
+    }
+  }, [questions, setValue]);
+
+  const { mutate: generateQuestions, isPending: isGenerating } = useQuizGeneration();
+  const { mutate: submitQuiz, isPending: isSubmitting } = useQuizSubmission();
 
   const handleManualQuestionAdd = () => {
-    if (!currentQuiz?.title) {
-      setQuizTitle('New Quiz');
-    }
-    addQuestion({
+    const newQuestion = {
       type: QuestionType.MULTIPLE_CHOICE,
       question: '',
       options: ['', ''],
       correctAnswer: '',
       moduleCode,
+    };
+    const updatedQuestions = [...(formQuestions || []), newQuestion];
+    setQuestions(updatedQuestions);
+  };
+
+  const handleRemoveQuestion = (index: number) => {
+    const updatedQuestions = (formQuestions || []).filter((_, i) => i !== index);
+    setQuestions(updatedQuestions);
+  };
+
+  const handleAIGeneration = () => {
+    const uploadedFile = uploadedFiles[0]?.file;
+    if (!uploadedFile || !(uploadedFile instanceof File)) {
+      toast.error('Please upload a PDF file first');
+      return;
+    }
+
+    const toastId = toast.loading('Generating questions from PDF...');
+    
+    generateQuestions(uploadedFile, {
+      onSuccess: (data) => {
+        // Set title based on PDF name
+        setValue('title', uploadedFile.name.replace('.pdf', ''));
+        
+        // Update questions in store
+        setQuestions(data);
+        
+        // Switch to manual tab to review questions
+        setSelectedTab('manual');
+        
+        toast.success('Questions Generated', {
+          id: toastId,
+          description: 'AI has generated questions based on your PDF. You can now review and edit them.',
+        });
+      },
+      onError: () => {
+        toast.dismiss(toastId);
+      }
     });
   };
 
-  const handleAIGeneration = async () => {
-    if (!pdfFile) return;
-    
-    setIsLoading(true);
-    const toastId = toast.loading('Generating questions from PDF...');
-    
-    try {
-      const formData = new FormData();
-      formData.append('file', pdfFile);
-
-      const response = await fetch('/api/quiz/generate', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate questions');
-      }
-
-      // Set a default title based on the PDF name
-      setQuizTitle(pdfFile.name.replace('.pdf', ''));
-      
-      // Add each generated question to the store
-      data.forEach((question: Question) => addQuestion(question));
-      
-      // Switch to manual tab to review questions
-      setSelectedTab('manual');
-      
-      toast.success('Questions Generated', {
-        id: toastId,
-        description: 'AI has generated questions based on your PDF. You can now review and edit them.',
-      });
-    } catch (error: any) {
-      console.error('Error generating questions:', error);
-      toast.error('Generation Failed', {
-        id: toastId,
-        description: error.message || 'Failed to generate questions. Please try again.',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSaveDraft = () => {
-    if (!currentQuiz?.title) {
-      toast.error('Please enter a quiz title');
-      return;
-    }
-    if (!currentQuiz?.questions?.length) {
+  const onSubmit = handleSubmit((data) => {
+    // Ensure we have questions
+    if (!data.questions?.length) {
       toast.error('Please add at least one question');
       return;
     }
-    saveQuizDraft(moduleCode);
-    toast.success('Quiz saved as draft');
-    onOpenChange(false);
-  };
+
+    submitQuiz(data, {
+      onSuccess: () => {
+        onOpenChange(false);
+        clearQuestions();
+        reset();
+      },
+    });
+  });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -125,60 +145,74 @@ export function CreateQuizModal({
             <TabsTrigger value="ai">AI Assisted</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="manual" className="space-y-4">
-            <div className="space-y-4">
-              <div>
-                <Label>Quiz Title</Label>
-                <Input 
-                  placeholder="Enter quiz title" 
-                  value={currentQuiz?.title || ''}
-                  onChange={(e) => setQuizTitle(e.target.value)}
-                />
-              </div>
-              
-              {currentQuiz?.questions?.map((question, index) => (
-                <QuestionEditor
-                  key={index}
-                  questionIndex={index}
-                  question={question}
-                />
-              ))}
+          <FormProvider {...form}>
+            <form onSubmit={onSubmit} className="space-y-6">
+              <TabsContent value="manual" className="space-y-4">
+                <div className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Quiz Title</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Enter quiz title" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  {questions.length > 0 ? (
+                    <div className="space-y-4">
+                      {questions.map((_, index) => (
+                        <QuestionEditor
+                          key={index}
+                          questionIndex={index}
+                          onRemove={() => handleRemoveQuestion(index)}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No questions yet. Add questions manually or use AI generation.
+                    </div>
+                  )}
 
-              <div className="flex justify-between">
-                <Button onClick={handleManualQuestionAdd}>
-                  Add Question
-                </Button>
+                  <div className="flex justify-between">
+                    <Button type="button" onClick={handleManualQuestionAdd}>
+                      Add Question
+                    </Button>
 
-                <Button 
-                  variant="outline" 
-                  onClick={handleSaveDraft}
-                  disabled={!currentQuiz?.questions?.length}
-                >
-                  Save as Draft
-                </Button>
-              </div>
-            </div>
-          </TabsContent>
+                    <Button 
+                      type="submit"
+                      variant="outline" 
+                      disabled={!questions.length || isSubmitting}
+                    >
+                      {isSubmitting ? 'Saving...' : 'Save Quiz'}
+                    </Button>
+                  </div>
+                </div>
+              </TabsContent>
 
-          <TabsContent value="ai" className="space-y-4">
-            <div className="space-y-4">
-              <div>
-                <Label>Upload Study Material (PDF)</Label>
-                <Input 
-                  type="file" 
-                  accept=".pdf"
-                  onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
-                />
-              </div>
+              <TabsContent value="ai" className="space-y-4">
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-2">
+                    <Label>Upload Study Material (PDF)</Label>
+                    <FileUploader onFileUpload={setUploadedFiles} />
+                  </div>
 
-              <Button 
-                onClick={handleAIGeneration}
-                disabled={!pdfFile || isLoading}
-              >
-                {isLoading ? 'Generating...' : 'Generate Questions'}
-              </Button>
-            </div>
-          </TabsContent>
+                  <Button 
+                    type="button"
+                    onClick={handleAIGeneration}
+                    disabled={!uploadedFiles.length || isGenerating}
+                  >
+                    {isGenerating ? 'Generating...' : 'Generate Questions'}
+                  </Button>
+                </div>
+              </TabsContent>
+            </form>
+          </FormProvider>
         </Tabs>
       </DialogContent>
     </Dialog>

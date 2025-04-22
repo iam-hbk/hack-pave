@@ -1,0 +1,2293 @@
+---
+description: This rule is needed when understanding the pave backend is important. when network requests need to be made to the pave django backend for any CRUD operation
+globs: 
+alwaysApply: false
+---
+openapi: 3.0.3
+info:
+  title: PAVE API
+  version: 1.0.0
+  description: API for PAVE Student Learning Engagement System
+  base_url:https://pave-django-3zd6n.kinsta.app
+paths:
+  /api/attempts/:
+    get:
+      operationId: attempts_list
+      tags:
+      - attempts
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudentAttempt'
+          description: ''
+    post:
+      operationId: attempts_create
+      tags:
+      - attempts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentAttempt'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StudentAttempt'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentAttempt'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentAttempt'
+          description: ''
+  /api/attempts/{id}/:
+    get:
+      operationId: attempts_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this student attempt.
+        required: true
+      tags:
+      - attempts
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentAttempt'
+          description: ''
+    put:
+      operationId: attempts_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this student attempt.
+        required: true
+      tags:
+      - attempts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentAttempt'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StudentAttempt'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentAttempt'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentAttempt'
+          description: ''
+    patch:
+      operationId: attempts_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this student attempt.
+        required: true
+      tags:
+      - attempts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentAttempt'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentAttempt'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentAttempt'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentAttempt'
+          description: ''
+    delete:
+      operationId: attempts_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this student attempt.
+        required: true
+      tags:
+      - attempts
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/attempts/{id}/results/:
+    get:
+      operationId: attempts_results_retrieve
+      description: Get results for a submitted attempt
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this student attempt.
+        required: true
+      tags:
+      - attempts
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentAttemptResult'
+          description: ''
+  /api/attempts/{id}/submit/:
+    post:
+      operationId: attempts_submit_create
+      description: Submit answers for an attempt
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this student attempt.
+        required: true
+      tags:
+      - attempts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttemptSubmit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AttemptSubmit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AttemptSubmit'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttemptSubmit'
+          description: ''
+  /api/attempts/start/{quiz_id}/:
+    post:
+      operationId: attempts_start_create
+      description: Start a new quiz attempt
+      parameters:
+      - in: path
+        name: quiz_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - attempts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentAttempt'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StudentAttempt'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentAttempt'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentAttempt'
+          description: ''
+  /api/auth/login/:
+    post:
+      operationId: auth_login_create
+      description: |-
+        Check the credentials and return the REST Token
+        if the credentials are valid and authenticated.
+        Calls Django Auth login method to register User ID
+        in Django session framework
+
+        Accept the following POST parameters: username, password
+        Return the REST Framework Token Object's key.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+          description: ''
+  /api/auth/logout/:
+    post:
+      operationId: auth_logout_create
+      description: |-
+        Calls Django logout method and delete the Token object
+        assigned to the current User object.
+
+        Accepts/Returns nothing.
+      tags:
+      - auth
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/password/change/:
+    post:
+      operationId: auth_password_change_create
+      description: |-
+        Calls Django Auth SetPasswordForm save method.
+
+        Accepts the following POST parameters: new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/password/reset/:
+    post:
+      operationId: auth_password_reset_create
+      description: |-
+        Calls Django Auth PasswordResetForm save method.
+
+        Accepts the following POST parameters: email
+        Returns the success/fail message.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/password/reset/confirm/:
+    post:
+      operationId: auth_password_reset_confirm_create
+      description: |-
+        Password reset e-mail link is confirmed, therefore
+        this resets the user's password.
+
+        Accepts the following POST parameters: token, uid,
+            new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/registration/:
+    post:
+      operationId: auth_registration_create
+      description: |-
+        Registers a new user.
+
+        Accepts the following POST parameters: username, email, password1, password2.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomRegister'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomRegister'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomRegister'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+          description: ''
+  /api/auth/registration/resend-email/:
+    post:
+      operationId: auth_registration_resend_email_create
+      description: |-
+        Resends another email to an unverified email.
+
+        Accepts the following POST parameter: email.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/registration/verify-email/:
+    post:
+      operationId: auth_registration_verify_email_create
+      description: |-
+        Verifies the email associated with the provided key.
+
+        Accepts the following POST parameter: key.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/user/:
+    get:
+      operationId: auth_user_retrieve
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - auth
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUserDetails'
+          description: ''
+    put:
+      operationId: auth_user_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUserDetails'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomUserDetails'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomUserDetails'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUserDetails'
+          description: ''
+    patch:
+      operationId: auth_user_partial_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomUserDetails'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomUserDetails'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomUserDetails'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUserDetails'
+          description: ''
+  /api/modules/:
+    get:
+      operationId: modules_list
+      tags:
+      - modules
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Module'
+          description: ''
+    post:
+      operationId: modules_create
+      tags:
+      - modules
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ModuleCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ModuleCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleCreate'
+          description: ''
+  /api/modules/{id}/:
+    get:
+      operationId: modules_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this module.
+        required: true
+      tags:
+      - modules
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleDetail'
+          description: ''
+    put:
+      operationId: modules_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this module.
+        required: true
+      tags:
+      - modules
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ModuleCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ModuleCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleCreate'
+          description: ''
+    patch:
+      operationId: modules_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this module.
+        required: true
+      tags:
+      - modules
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedModuleCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedModuleCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedModuleCreate'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleCreate'
+          description: ''
+    delete:
+      operationId: modules_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this module.
+        required: true
+      tags:
+      - modules
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/modules/{id}/add-quiz/:
+    post:
+      operationId: modules_add_quiz_create
+      description: Add a quiz to a module
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this module.
+        required: true
+      tags:
+      - modules
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Module'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Module'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Module'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Module'
+          description: ''
+  /api/modules/{id}/grant-access/:
+    post:
+      operationId: modules_grant_access_create
+      description: Grant a student access to this module
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this module.
+        required: true
+      tags:
+      - modules
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Module'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Module'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Module'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Module'
+          description: ''
+  /api/modules/{id}/revoke-access/{student_id}/:
+    delete:
+      operationId: modules_revoke_access_destroy
+      description: Revoke a student's access to this module
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this module.
+        required: true
+      - in: path
+        name: student_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - modules
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/modules/{id}/students/:
+    get:
+      operationId: modules_students_retrieve
+      description: Get students with access to this module
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this module.
+        required: true
+      tags:
+      - modules
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Module'
+          description: ''
+  /api/questions/:
+    get:
+      operationId: questions_list
+      tags:
+      - questions
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+          description: ''
+    post:
+      operationId: questions_create
+      tags:
+      - questions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/QuestionCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/QuestionCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionCreate'
+          description: ''
+  /api/questions/{id}/:
+    get:
+      operationId: questions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this question.
+        required: true
+      tags:
+      - questions
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+          description: ''
+    put:
+      operationId: questions_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this question.
+        required: true
+      tags:
+      - questions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/QuestionCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/QuestionCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionCreate'
+          description: ''
+    patch:
+      operationId: questions_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this question.
+        required: true
+      tags:
+      - questions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedQuestionCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedQuestionCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedQuestionCreate'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionCreate'
+          description: ''
+    delete:
+      operationId: questions_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this question.
+        required: true
+      tags:
+      - questions
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/questions/{id}/add-option/:
+    post:
+      operationId: questions_add_option_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this question.
+        required: true
+      tags:
+      - questions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Question'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Question'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Question'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+          description: ''
+  /api/quizzes/:
+    get:
+      operationId: quizzes_list
+      tags:
+      - quizzes
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quiz'
+          description: ''
+    post:
+      operationId: quizzes_create
+      description: Create a quiz with optional nested questions and options
+      tags:
+      - quizzes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizCreate'
+            examples:
+              QuizCreationExample:
+                value:
+                  title: Basic Math Quiz
+                  description: Test your math skills
+                  time_limit: 30
+                  questions:
+                  - text: What is 2+2?
+                    order: 1
+                    points: 10
+                    question_type: SINGLE
+                    options:
+                    - text: '3'
+                      is_correct: false
+                    - text: '4'
+                      is_correct: true
+                    - text: '5'
+                      is_correct: false
+                  - text: Select all prime numbers under 10
+                    order: 2
+                    points: 15
+                    question_type: MULTIPLE
+                    options:
+                    - text: '1'
+                      is_correct: false
+                    - text: '2'
+                      is_correct: true
+                    - text: '3'
+                      is_correct: true
+                    - text: '4'
+                      is_correct: false
+                    - text: '5'
+                      is_correct: true
+                    - text: '7'
+                      is_correct: true
+                summary: Quiz Creation Example
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/QuizCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/QuizCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizCreate'
+              examples:
+                QuizCreationExample:
+                  value:
+                    title: Basic Math Quiz
+                    description: Test your math skills
+                    time_limit: 30
+                    questions:
+                    - text: What is 2+2?
+                      order: 1
+                      points: 10
+                      question_type: SINGLE
+                      options:
+                      - text: '3'
+                        is_correct: false
+                      - text: '4'
+                        is_correct: true
+                      - text: '5'
+                        is_correct: false
+                    - text: Select all prime numbers under 10
+                      order: 2
+                      points: 15
+                      question_type: MULTIPLE
+                      options:
+                      - text: '1'
+                        is_correct: false
+                      - text: '2'
+                        is_correct: true
+                      - text: '3'
+                        is_correct: true
+                      - text: '4'
+                        is_correct: false
+                      - text: '5'
+                        is_correct: true
+                      - text: '7'
+                        is_correct: true
+                  summary: Quiz Creation Example
+          description: ''
+  /api/quizzes/{id}/:
+    get:
+      operationId: quizzes_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this quiz.
+        required: true
+      tags:
+      - quizzes
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quiz'
+          description: ''
+    put:
+      operationId: quizzes_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this quiz.
+        required: true
+      tags:
+      - quizzes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizCreate'
+            examples:
+              QuizCreationExample:
+                value:
+                  title: Basic Math Quiz
+                  description: Test your math skills
+                  time_limit: 30
+                  questions:
+                  - text: What is 2+2?
+                    order: 1
+                    points: 10
+                    question_type: SINGLE
+                    options:
+                    - text: '3'
+                      is_correct: false
+                    - text: '4'
+                      is_correct: true
+                    - text: '5'
+                      is_correct: false
+                  - text: Select all prime numbers under 10
+                    order: 2
+                    points: 15
+                    question_type: MULTIPLE
+                    options:
+                    - text: '1'
+                      is_correct: false
+                    - text: '2'
+                      is_correct: true
+                    - text: '3'
+                      is_correct: true
+                    - text: '4'
+                      is_correct: false
+                    - text: '5'
+                      is_correct: true
+                    - text: '7'
+                      is_correct: true
+                summary: Quiz Creation Example
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/QuizCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/QuizCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizCreate'
+              examples:
+                QuizCreationExample:
+                  value:
+                    title: Basic Math Quiz
+                    description: Test your math skills
+                    time_limit: 30
+                    questions:
+                    - text: What is 2+2?
+                      order: 1
+                      points: 10
+                      question_type: SINGLE
+                      options:
+                      - text: '3'
+                        is_correct: false
+                      - text: '4'
+                        is_correct: true
+                      - text: '5'
+                        is_correct: false
+                    - text: Select all prime numbers under 10
+                      order: 2
+                      points: 15
+                      question_type: MULTIPLE
+                      options:
+                      - text: '1'
+                        is_correct: false
+                      - text: '2'
+                        is_correct: true
+                      - text: '3'
+                        is_correct: true
+                      - text: '4'
+                        is_correct: false
+                      - text: '5'
+                        is_correct: true
+                      - text: '7'
+                        is_correct: true
+                  summary: Quiz Creation Example
+          description: ''
+    patch:
+      operationId: quizzes_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this quiz.
+        required: true
+      tags:
+      - quizzes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedQuizCreate'
+            examples:
+              QuizCreationExample:
+                value:
+                  title: Basic Math Quiz
+                  description: Test your math skills
+                  time_limit: 30
+                  questions:
+                  - text: What is 2+2?
+                    order: 1
+                    points: 10
+                    question_type: SINGLE
+                    options:
+                    - text: '3'
+                      is_correct: false
+                    - text: '4'
+                      is_correct: true
+                    - text: '5'
+                      is_correct: false
+                  - text: Select all prime numbers under 10
+                    order: 2
+                    points: 15
+                    question_type: MULTIPLE
+                    options:
+                    - text: '1'
+                      is_correct: false
+                    - text: '2'
+                      is_correct: true
+                    - text: '3'
+                      is_correct: true
+                    - text: '4'
+                      is_correct: false
+                    - text: '5'
+                      is_correct: true
+                    - text: '7'
+                      is_correct: true
+                summary: Quiz Creation Example
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedQuizCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedQuizCreate'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizCreate'
+              examples:
+                QuizCreationExample:
+                  value:
+                    title: Basic Math Quiz
+                    description: Test your math skills
+                    time_limit: 30
+                    questions:
+                    - text: What is 2+2?
+                      order: 1
+                      points: 10
+                      question_type: SINGLE
+                      options:
+                      - text: '3'
+                        is_correct: false
+                      - text: '4'
+                        is_correct: true
+                      - text: '5'
+                        is_correct: false
+                    - text: Select all prime numbers under 10
+                      order: 2
+                      points: 15
+                      question_type: MULTIPLE
+                      options:
+                      - text: '1'
+                        is_correct: false
+                      - text: '2'
+                        is_correct: true
+                      - text: '3'
+                        is_correct: true
+                      - text: '4'
+                        is_correct: false
+                      - text: '5'
+                        is_correct: true
+                      - text: '7'
+                        is_correct: true
+                  summary: Quiz Creation Example
+          description: ''
+    delete:
+      operationId: quizzes_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this quiz.
+        required: true
+      tags:
+      - quizzes
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/quizzes/{id}/add-question/:
+    post:
+      operationId: quizzes_add_question_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this quiz.
+        required: true
+      tags:
+      - quizzes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quiz'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Quiz'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Quiz'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quiz'
+          description: ''
+  /api/quizzes/create-custom/:
+    post:
+      operationId: quizzes_create_custom_create
+      description: Create a quiz using the custom format with different question types
+      tags:
+      - quizzes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomQuizCreate'
+            examples:
+              CustomQuizFormatExample:
+                value:
+                  title: New Quiz
+                  questions:
+                  - type: MULTIPLE_CHOICE
+                    question: According to the document, what is the expiration date
+                      of the quote?
+                    options:
+                    - April 17, 2025
+                    - April 24, 2025
+                    - April 10, 2025
+                    - May 1, 2025
+                    correctAnswer: April 24, 2025
+                    explanation: The expiration date is explicitly stated as April
+                      24, 2025.
+                    moduleCode: orchid-collections quotation
+                  - type: FILL_IN_BLANK
+                    question: The recurring annual fee for domain registration is
+                      ____.
+                    options: []
+                    correctAnswer: ZAR99
+                    explanation: 'The document states ''Note: Recurring annual fees
+                      of ZAR99'' under the Domain and Email Setup section.'
+                    moduleCode: orchid-collections quotation
+                  - type: TEXT
+                    question: What percentage of the total project cost is due upon
+                      project completion as the final payment?
+                    options: []
+                    correctAnswer: 80%
+                    explanation: 'The document states ''Final Payment: The remaining
+                      80% (ZAR 3,312) due upon project completion and prior to final
+                      handover.'''
+                    moduleCode: orchid-collections quotation
+                  - type: SELECT_ALL
+                    question: Which of the following key features will be implemented
+                      in the website development for Orchid Collections? (Select all
+                      that apply)
+                    options:
+                    - Services
+                    - Tutoring
+                    - Business Registration Assistance
+                    - Blogs
+                    - Events
+                    - Contacts
+                    - Testimonials
+                    - Domain Registration
+                    correctAnswer:
+                    - Blogs
+                    - Events
+                    - Contacts
+                    - Testimonials
+                    explanation: The 'Scope of Work' section lists Blogs, Events,
+                      Contacts, and Testimonials as key features to be implemented.
+                    moduleCode: orchid-collections quotation
+                  moduleCode: IFS03A1
+                summary: Custom Quiz Format Example
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomQuizCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomQuizCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomQuizCreate'
+              examples:
+                CustomQuizFormatExample:
+                  value:
+                    title: New Quiz
+                    questions:
+                    - type: MULTIPLE_CHOICE
+                      question: According to the document, what is the expiration
+                        date of the quote?
+                      options:
+                      - April 17, 2025
+                      - April 24, 2025
+                      - April 10, 2025
+                      - May 1, 2025
+                      correctAnswer: April 24, 2025
+                      explanation: The expiration date is explicitly stated as April
+                        24, 2025.
+                      moduleCode: orchid-collections quotation
+                    - type: FILL_IN_BLANK
+                      question: The recurring annual fee for domain registration is
+                        ____.
+                      options: []
+                      correctAnswer: ZAR99
+                      explanation: 'The document states ''Note: Recurring annual fees
+                        of ZAR99'' under the Domain and Email Setup section.'
+                      moduleCode: orchid-collections quotation
+                    - type: TEXT
+                      question: What percentage of the total project cost is due upon
+                        project completion as the final payment?
+                      options: []
+                      correctAnswer: 80%
+                      explanation: 'The document states ''Final Payment: The remaining
+                        80% (ZAR 3,312) due upon project completion and prior to final
+                        handover.'''
+                      moduleCode: orchid-collections quotation
+                    - type: SELECT_ALL
+                      question: Which of the following key features will be implemented
+                        in the website development for Orchid Collections? (Select
+                        all that apply)
+                      options:
+                      - Services
+                      - Tutoring
+                      - Business Registration Assistance
+                      - Blogs
+                      - Events
+                      - Contacts
+                      - Testimonials
+                      - Domain Registration
+                      correctAnswer:
+                      - Blogs
+                      - Events
+                      - Contacts
+                      - Testimonials
+                      explanation: The 'Scope of Work' section lists Blogs, Events,
+                        Contacts, and Testimonials as key features to be implemented.
+                      moduleCode: orchid-collections quotation
+                    moduleCode: IFS03A1
+                  summary: Custom Quiz Format Example
+          description: ''
+components:
+  schemas:
+    AnswerOption:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        text:
+          type: string
+          maxLength: 255
+        is_correct:
+          type: boolean
+          writeOnly: true
+      required:
+      - id
+      - text
+    AttemptSubmit:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentAnswer'
+      required:
+      - answers
+      - id
+    Creator:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+      required:
+      - email
+      - id
+      - username
+    CustomQuizCreate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        moduleCode:
+          type: string
+        questions:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+      required:
+      - questions
+      - title
+    CustomRegister:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password1:
+          type: string
+          writeOnly: true
+        password2:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - password1
+      - password2
+      - username
+    CustomUserDetails:
+      type: object
+      description: User model w/o password
+      properties:
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        role:
+          type: string
+          readOnly: true
+        points:
+          type: integer
+          readOnly: true
+      required:
+      - email
+      - pk
+      - points
+      - role
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+      - password
+    Module:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        instructor:
+          allOf:
+          - $ref: '#/components/schemas/Creator'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        quiz_count:
+          type: string
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - instructor
+      - quiz_count
+      - title
+      - updated_at
+    ModuleCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+      required:
+      - id
+      - title
+    ModuleDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        instructor:
+          allOf:
+          - $ref: '#/components/schemas/Creator'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        quiz_count:
+          type: string
+          readOnly: true
+        quizzes:
+          type: string
+          readOnly: true
+        students:
+          type: string
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - instructor
+      - quiz_count
+      - quizzes
+      - students
+      - title
+      - updated_at
+    PasswordChange:
+      type: object
+      properties:
+        new_password1:
+          type: string
+          maxLength: 128
+        new_password2:
+          type: string
+          maxLength: 128
+      required:
+      - new_password1
+      - new_password2
+    PasswordReset:
+      type: object
+      description: Serializer for requesting a password reset e-mail.
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    PasswordResetConfirm:
+      type: object
+      description: Serializer for confirming a password reset attempt.
+      properties:
+        new_password1:
+          type: string
+          maxLength: 128
+        new_password2:
+          type: string
+          maxLength: 128
+        uid:
+          type: string
+        token:
+          type: string
+      required:
+      - new_password1
+      - new_password2
+      - token
+      - uid
+    PatchedCustomUserDetails:
+      type: object
+      description: User model w/o password
+      properties:
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        role:
+          type: string
+          readOnly: true
+        points:
+          type: integer
+          readOnly: true
+    PatchedModuleCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+    PatchedQuestionCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        text:
+          type: string
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        points:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        question_type:
+          $ref: '#/components/schemas/QuestionTypeEnum'
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerOption'
+    PatchedQuizCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        time_limit:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Time limit in seconds
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionCreate'
+    PatchedStudentAttempt:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        student:
+          type: integer
+          readOnly: true
+        quiz:
+          type: integer
+        quiz_title:
+          type: string
+          readOnly: true
+        started_at:
+          type: string
+          format: date-time
+          readOnly: true
+        submitted_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+          default: IN_PROGRESS
+        score:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
+        time_spent:
+          type: integer
+          readOnly: true
+          nullable: true
+          description: Time spent in seconds
+        pave_coins_earned:
+          type: integer
+          readOnly: true
+    Question:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        text:
+          type: string
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        points:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        question_type:
+          $ref: '#/components/schemas/QuestionTypeEnum'
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerOption'
+          readOnly: true
+      required:
+      - id
+      - options
+      - text
+    QuestionCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        text:
+          type: string
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        points:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        question_type:
+          $ref: '#/components/schemas/QuestionTypeEnum'
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerOption'
+      required:
+      - id
+      - options
+      - text
+    QuestionTypeEnum:
+      enum:
+      - SINGLE
+      - MULTIPLE
+      - MULTIPLE_CHOICE
+      - FILL_IN_BLANK
+      - TEXT
+      - SELECT_ALL
+      type: string
+      description: |-
+        * `SINGLE` - Single Choice (Radio)
+        * `MULTIPLE` - Multiple Choice (Checkbox)
+        * `MULTIPLE_CHOICE` - Multiple Choice
+        * `FILL_IN_BLANK` - Fill in the Blank
+        * `TEXT` - Text Input
+        * `SELECT_ALL` - Select All That Apply
+    Quiz:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        creator:
+          allOf:
+          - $ref: '#/components/schemas/Creator'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        time_limit:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Time limit in seconds
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+          readOnly: true
+        questions_count:
+          type: string
+          readOnly: true
+      required:
+      - created_at
+      - creator
+      - id
+      - questions
+      - questions_count
+      - title
+      - updated_at
+    QuizCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        time_limit:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Time limit in seconds
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionCreate'
+      required:
+      - id
+      - title
+    ResendEmailVerification:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    RestAuthDetail:
+      type: object
+      properties:
+        detail:
+          type: string
+          readOnly: true
+      required:
+      - detail
+    RoleEnum:
+      enum:
+      - STUDENT
+      - INSTRUCTOR
+      type: string
+      description: |-
+        * `STUDENT` - Student
+        * `INSTRUCTOR` - Instructor
+    StatusEnum:
+      enum:
+      - IN_PROGRESS
+      - SUBMITTED
+      - TIMED_OUT
+      type: string
+      description: |-
+        * `IN_PROGRESS` - In Progress
+        * `SUBMITTED` - Submitted
+        * `TIMED_OUT` - Timed Out
+    StudentAnswer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        question:
+          type: integer
+        question_text:
+          type: string
+          readOnly: true
+        question_type:
+          type: string
+          readOnly: true
+        selected_option:
+          type: integer
+          nullable: true
+        selected_options:
+          type: array
+          items:
+            type: integer
+        text_answer:
+          type: string
+          nullable: true
+          description: Answer for TEXT and FILL_IN_BLANK questions
+        is_correct:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - is_correct
+      - question
+      - question_text
+      - question_type
+    StudentAttempt:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        student:
+          type: integer
+          readOnly: true
+        quiz:
+          type: integer
+        quiz_title:
+          type: string
+          readOnly: true
+        started_at:
+          type: string
+          format: date-time
+          readOnly: true
+        submitted_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+          default: IN_PROGRESS
+        score:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
+        time_spent:
+          type: integer
+          readOnly: true
+          nullable: true
+          description: Time spent in seconds
+        pave_coins_earned:
+          type: integer
+          readOnly: true
+      required:
+      - id
+      - pave_coins_earned
+      - quiz
+      - quiz_title
+      - score
+      - started_at
+      - status
+      - student
+      - submitted_at
+      - time_spent
+    StudentAttemptResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        student:
+          type: string
+          readOnly: true
+        quiz:
+          allOf:
+          - $ref: '#/components/schemas/Quiz'
+          readOnly: true
+        started_at:
+          type: string
+          format: date-time
+          readOnly: true
+        submitted_at:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          default: IN_PROGRESS
+        score:
+          type: number
+          format: double
+          nullable: true
+        time_spent:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+          description: Time spent in seconds
+        pave_coins_earned:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentAnswer'
+          readOnly: true
+      required:
+      - answers
+      - id
+      - quiz
+      - started_at
+      - student
+    Token:
+      type: object
+      description: Serializer for Token model.
+      properties:
+        key:
+          type: string
+          maxLength: 40
+      required:
+      - key
+    VerifyEmail:
+      type: object
+      properties:
+        key:
+          type: string
+          writeOnly: true
+      required:
+      - key
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

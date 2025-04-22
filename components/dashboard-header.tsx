@@ -50,9 +50,9 @@ export default function DashboardHeader() {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
             <Avatar className="h-8 w-8">
-              <AvatarImage src={user.avatar} alt={user.name} />
+              <AvatarImage src={user.avatar} alt={user.email} />
               <AvatarFallback>
-                {user.name.charAt(0).toUpperCase()}
+                {user.email.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </Button>
@@ -60,7 +60,7 @@ export default function DashboardHeader() {
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm leading-none font-medium">{user.name}</p>
+              <p className="text-sm leading-none font-medium">{user.email}</p>
               <p className="text-muted-foreground text-xs leading-none">
                 {user.email}
               </p>

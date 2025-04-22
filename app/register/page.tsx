@@ -1,13 +1,10 @@
 import { getUser } from "@/lib/dal";
 import { redirect } from "next/navigation";
-import { LoginForm } from "@/components/login-form";
+import { RegisterForm } from "@/components/register-form";
 import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 
 type Params = Promise<{ callbackUrl?: string }>;
-export default async function LoginPage({
+export default async function RegisterPage({
   searchParams,
 }: {
   searchParams: Params;
@@ -23,21 +20,23 @@ export default async function LoginPage({
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
-        <Button variant="link" asChild>
-          <Link href="/">
-            <ArrowLeft className=" h-4 w-4" /> Go back
-          </Link>
-        </Button>
         <div className="flex flex-col items-center justify-center">
-          <Link href="/">
-            <Image src="/PAVE_Logo.svg" alt="Logo" width={100} height={100} />
-          </Link>
+          <Image src="/PAVE_Logo.svg" alt="Logo" width={100} height={100} />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            Create your account
           </h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Or{" "}
+            <a
+              href="/login"
+              className="font-medium text-primary hover:text-primary/90"
+            >
+              sign in to your account
+            </a>
+          </p>
         </div>
-        <LoginForm callbackUrl={callbackUrl} />
+        <RegisterForm callbackUrl={callbackUrl} />
       </div>
     </div>
   );
-}
+} 
